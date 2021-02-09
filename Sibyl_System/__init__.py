@@ -39,8 +39,7 @@ if ENV:
     BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
 
-INSPECTORS.extend(SIBYL)
-ENFORCERS.extend(INSPECTORS)
+
 
 session = aiohttp.ClientSession()
 
