@@ -21,21 +21,37 @@ logging.basicConfig(
 )
 
 ENV = bool(os.environ.get("ENV", False))
-API_ID_KEY = int(os.environ.get("API_ID_KEY"))
-API_HASH_KEY = os.environ.get("API_HASH_KEY")
-STRING_SESSION = os.environ.get("STRING_SESSION")
-HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY")
-HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
-RAW_SIBYL = os.environ.get("SIBYL", "")
-RAW_ENFORCERS = os.environ.get("ENFORCERS", "")
-SIBYL = list(int(x) for x in os.environ.get("SIBYL", "").split())
-INSPECTORS = list(int(x) for x in os.environ.get("INSPECTORS", "").split())
-ENFORCERS = list(int(x) for x in os.environ.get("ENFORCERS", "").split())
-MONGO_DB_URL = os.environ.get("MONGO_DB_URL")
-Sibyl_logs = int(os.environ.get("Sibyl_logs"))
-Sibyl_approved_logs = int(os.environ.get("Sibyl_Approved_Logs"))
-GBAN_MSG_LOGS = int(os.environ.get("GBAN_MSG_LOGS"))
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
+if ENV:
+    API_ID_KEY = int(os.environ.get("API_ID_KEY"))
+    API_HASH_KEY = os.environ.get("API_HASH_KEY")
+    STRING_SESSION = os.environ.get("STRING_SESSION")
+    HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY")
+    HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME")
+    RAW_SIBYL = os.environ.get("SIBYL", "")
+    RAW_ENFORCERS = os.environ.get("ENFORCERS", "")
+    SIBYL = list(int(x) for x in os.environ.get("SIBYL", "").split())
+    INSPECTORS = list(int(x) for x in os.environ.get("INSPECTORS", "").split())
+    ENFORCERS = list(int(x) for x in os.environ.get("ENFORCERS", "").split())
+    MONGO_DB_URL = os.env
+else:
+    import Sibyl_System.config as Config
+
+    API_ID_KEY = Config.API_ID
+    API_HASH_KEY = Config.API_HASH
+    STRING_SESSION = Config.STRING_SESSION
+    MONGO_DB_URL = Config.MONGO_DB_URL
+    with open(os.path.join(os.getcwd(), "Sibyl_System\\elevated_users.json"), "r") as f:
+        data = json.load(f)
+    SIBYL = data["SIBYL"]
+    ENFORCERS = data["ENFORCERS"]
+    INSPECTORS = data["INSPECTORS"]
+    Sibyl_logs = Config.Sibyl_logs
+    Sibyl_approved_logs = Config.Sibyl_approved_logs
+    GBAN_MSG_LOGS = Config.GBAN_MSG_LOGS
+    BOT_TOKEN = Config.BOT_TOKEN
+
+INSPECTORS.extend(SIBYL)
+ENFORCERS.extend(INSPECTORS)
 
 
 
